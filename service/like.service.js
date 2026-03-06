@@ -6,17 +6,19 @@ import prisma from "../common/prisma/prisma.connect.js";
 export const likeService = {
    async create(req) {
       const {userId, resId} = req.body;
-      console.log({userId, resId});
       
       //Kiểm tra người dùng và nhà hàng có tồn tại trong hệ thống không
       await checkUserExist(userId);
       await checkResExist(resId);
 
       //Kiểm tra xem người dùng có ấn like lần nữa không
-      const likeExist = await prisma.like_res.findFirst({
+      // findUnique bằng composite key (userId,resId) cho kết quả nhanh hơn
+      const likeExist = await prisma.like_res.findUnique({
          where:{
-            user_id:+userId,
-            res_id:+resId
+            user_id_res_id:{
+               user_id:+userId,
+               res_id:+resId
+            }    
          }
       });
 
