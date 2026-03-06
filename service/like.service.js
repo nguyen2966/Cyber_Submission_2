@@ -39,7 +39,8 @@ export const likeService = {
 
       const result = await prisma.like_res.findMany({
          where:{
-            user_id:+userId
+            user_id:+userId,
+            isLike: true
          }
       });
 
@@ -52,7 +53,8 @@ export const likeService = {
 
       const result = await prisma.like_res.findMany({
          where:{
-            res_id:+resId
+            res_id:+resId,
+            isLike:true
          }
       });
 
